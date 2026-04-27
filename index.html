@@ -1043,7 +1043,7 @@
                         <span class="chip" data-value="Otros">📦 Otros</span>
                     </div>
                 </div>
-                <button type="submit" class="btn-submit">Quiero sumarme →</button>
+                <button type="button" class="btn-submit" id="btn-sumarme">Quiero sumarme →</button>
                 <p class="disclaimer-form">Te contactamos en menos de 24hs · <a id="link-politica-form">Política de privacidad</a></p>
             </form>
             <div class="bloque-whatsapp-alt">
@@ -1177,12 +1177,12 @@
             const pantallaGracias = document.getElementById('pantalla-gracias');
             const btnCerrarGracias = document.getElementById('btn-cerrar-gracias');
 
-            formSumarme.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const formData = new FormData(formSumarme);
-                const nombre = formData.get('nombre');
-                const almacen = formData.get('almacen');
-                const whatsapp = formData.get('whatsapp');
+            document.getElementById('btn-sumarme').addEventListener('click', () => {
+                const nombre = document.getElementById('nombre').value.trim();
+                const almacen = document.getElementById('almacen').value.trim();
+                const whatsapp = document.getElementById('whatsapp').value.trim();
+                if (!nombre || !almacen || !whatsapp) return;
+
                 const productos = Array.from(document.querySelectorAll('#chips-productos .chip.selected'))
                     .map(c => c.getAttribute('data-value'));
 
@@ -1192,19 +1192,7 @@
                     `*WhatsApp:* ${whatsapp}\n` +
                     `*Productos de interés:* ${productos.length ? productos.join(', ') : 'No especificados'}`;
 
-                const linkWsp = document.createElement('a');
-                linkWsp.href = `https://wa.me/5493416067866?text=${encodeURIComponent(mensaje)}`;
-                linkWsp.target = '_blank';
-                linkWsp.rel = 'noopener';
-                document.body.appendChild(linkWsp);
-                linkWsp.click();
-                document.body.removeChild(linkWsp);
-
-                pantallaGracias.classList.add('show');
-                pantallaGracias.setAttribute('aria-hidden', 'false');
-                document.body.style.overflow = 'hidden';
-                formSumarme.reset();
-                document.querySelectorAll('#chips-productos .chip.selected').forEach(c => c.classList.remove('selected'));
+                window.location.href = `https://wa.me/5493416067866?text=${encodeURIComponent(mensaje)}`;
             });
 
             function cerrarGracias() {
