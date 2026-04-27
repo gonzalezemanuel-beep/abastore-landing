@@ -1180,20 +1180,25 @@
             formSumarme.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const formData = new FormData(formSumarme);
-                const datos = {
-                    nombre: formData.get('nombre'),
-                    almacen: formData.get('almacen'),
-                    whatsapp: formData.get('whatsapp'),
-                    productos: Array.from(document.querySelectorAll('#chips-productos .chip.selected'))
-                        .map(c => c.getAttribute('data-value'))
-                };
-                console.log('📋 Datos del formulario:', datos);
+                const nombre = formData.get('nombre');
+                const almacen = formData.get('almacen');
+                const whatsapp = formData.get('whatsapp');
+                const productos = Array.from(document.querySelectorAll('#chips-productos .chip.selected'))
+                    .map(c => c.getAttribute('data-value'));
+
+                const mensaje = `Hola! Me quiero sumar al pool de compras 🛒\n\n` +
+                    `*Nombre:* ${nombre}\n` +
+                    `*Almacén:* ${almacen}\n` +
+                    `*WhatsApp:* ${whatsapp}\n` +
+                    `*Productos de interés:* ${productos.length ? productos.join(', ') : 'No especificados'}`;
+
+                window.open(`https://wa.me/5493416067866?text=${encodeURIComponent(mensaje)}`, '_blank');
+
                 pantallaGracias.classList.add('show');
                 pantallaGracias.setAttribute('aria-hidden', 'false');
                 document.body.style.overflow = 'hidden';
                 formSumarme.reset();
-                document.querySelectorAll('#chips-productos .chip.selected').forEach(c => c.classList.remove(
-                    'selected'));
+                document.querySelectorAll('#chips-productos .chip.selected').forEach(c => c.classList.remove('selected'));
             });
 
             function cerrarGracias() {
