@@ -1192,7 +1192,13 @@
                     `*WhatsApp:* ${whatsapp}\n` +
                     `*Productos de interés:* ${productos.length ? productos.join(', ') : 'No especificados'}`;
 
-                window.open(`https://wa.me/5493416067866?text=${encodeURIComponent(mensaje)}`, '_blank');
+                const linkWsp = document.createElement('a');
+                linkWsp.href = `https://wa.me/5493416067866?text=${encodeURIComponent(mensaje)}`;
+                linkWsp.target = '_blank';
+                linkWsp.rel = 'noopener';
+                document.body.appendChild(linkWsp);
+                linkWsp.click();
+                document.body.removeChild(linkWsp);
 
                 pantallaGracias.classList.add('show');
                 pantallaGracias.setAttribute('aria-hidden', 'false');
