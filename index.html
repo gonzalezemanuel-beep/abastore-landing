@@ -1043,7 +1043,7 @@
                         <span class="chip" data-value="Otros">📦 Otros</span>
                     </div>
                 </div>
-                <button type="button" class="btn-submit" id="btn-sumarme">Quiero sumarme →</button>
+                <a href="#" class="btn-submit" id="btn-sumarme" onclick="return armarWsp(this)">Quiero sumarme →</a>
                 <p class="disclaimer-form">Te contactamos en menos de 24hs · <a id="link-politica-form">Política de privacidad</a></p>
             </form>
             <div class="bloque-whatsapp-alt">
@@ -1177,23 +1177,23 @@
             const pantallaGracias = document.getElementById('pantalla-gracias');
             const btnCerrarGracias = document.getElementById('btn-cerrar-gracias');
 
-            document.getElementById('btn-sumarme').addEventListener('click', () => {
+            function armarWsp(link) {
                 const nombre = document.getElementById('nombre').value.trim();
                 const almacen = document.getElementById('almacen').value.trim();
                 const whatsapp = document.getElementById('whatsapp').value.trim();
-                if (!nombre || !almacen || !whatsapp) return;
-
+                if (!nombre || !almacen || !whatsapp) return false;
                 const productos = Array.from(document.querySelectorAll('#chips-productos .chip.selected'))
                     .map(c => c.getAttribute('data-value'));
-
-                const mensaje = `Hola! Me quiero sumar al pool de compras 🛒\n\n` +
-                    `*Nombre:* ${nombre}\n` +
-                    `*Almacén:* ${almacen}\n` +
-                    `*WhatsApp:* ${whatsapp}\n` +
-                    `*Productos de interés:* ${productos.length ? productos.join(', ') : 'No especificados'}`;
-
-                window.location.href = `https://wa.me/5493416067866?text=${encodeURIComponent(mensaje)}`;
-            });
+                const mensaje = 'Hola! Me quiero sumar al pool de compras\n\n'
+                    + 'Nombre: ' + nombre + '\n'
+                    + 'Almacen: ' + almacen + '\n'
+                    + 'WhatsApp: ' + whatsapp + '\n'
+                    + 'Productos: ' + (productos.length ? productos.join(', ') : 'No especificados');
+                link.href = 'https://wa.me/5493416067866?text=' + encodeURIComponent(mensaje);
+                link.target = '_blank';
+                link.rel = 'noopener';
+                return true;
+            }
 
             function cerrarGracias() {
                 pantallaGracias.classList.remove('show');
