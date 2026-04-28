@@ -586,9 +586,9 @@
             color: var(--text-mid);
         }
         .chip.selected {
-            background: var(--accent-light);
-            color: var(--accent);
-            border-color: var(--accent);
+            background: #16a34a;
+            color: #ffffff;
+            border-color: #16a34a;
             font-weight: 700;
         }
         .btn-submit {
@@ -1047,8 +1047,8 @@
                         <span class="chip" data-value="Otros">📦 Otros</span>
                     </div>
                 </div>
-                <button type="button" class="btn-submit" id="btn-sumarme" onclick="armarWsp()">Quiero sumarme →</button>
-                <p class="disclaimer-form">Te contactamos en menos de 24hs · <a id="link-politica-form">Política de privacidad</a></p>
+                <button type="button" class="btn-submit" id="btn-sumarme">Quiero sumarme →</button>
+                <p class="disclaimer-form">Te contactamos en menos de 24hs · <a href="#" id="link-politica-form">Política de privacidad</a></p>
             </form>
             <div class="bloque-whatsapp-alt">
                 <strong>¿Preferís hablar antes?</strong><br>
@@ -1140,12 +1140,13 @@
             });
 
             // ─── Chips multiselect ───
-            const chipsWrap = document.getElementById('chips-productos');
-            chipsWrap.addEventListener('click', (e) => {
-                const chip = e.target.closest('.chip');
-                if (!chip) return;
-                chip.classList.toggle('selected');
+            document.querySelectorAll('#chips-productos .chip').forEach(function(chip) {
+                chip.addEventListener('click', function() {
+                    chip.classList.toggle('selected');
+                });
             });
+            const boton = document.getElementById('btn-sumarme');
+            if (boton) boton.addEventListener('click', armarWsp);
 
             // ─── Modal Privacidad ───
             const modalPrivacidad = document.getElementById('modal-privacidad');
@@ -1182,18 +1183,34 @@
             const btnCerrarGracias = document.getElementById('btn-cerrar-gracias');
 
             function armarWsp() {
-                const nombre = document.getElementById('nombre').value.trim();
-                const almacen = document.getElementById('almacen').value.trim();
-                const whatsapp = document.getElementById('whatsapp').value.trim();
-                if (!nombre || !almacen || !whatsapp) return;
-                const productos = Array.from(document.querySelectorAll('#chips-productos .chip.selected'))
-                    .map(c => c.getAttribute('data-value'));
-                const mensaje = 'Hola! Me quiero sumar al pool de compras\n\n'
-                    + 'Nombre: ' + nombre + '\n'
-                    + 'Almacen: ' + almacen + '\n'
-                    + 'WhatsApp: ' + whatsapp + '\n'
-                    + 'Productos: ' + (productos.length ? productos.join(', ') : 'No especificados');
-                window.open('https://wa.me/5493416067866?text=' + encodeURIComponent(mensaje), '_blank', 'noopener');
+                const nombreInput = document.getElementById('nombre');
+                const almacenInput = document.getElementById('almacen');
+                const whatsappInput = document.getElementById('whatsapp');
+
+                const nombre = nombreInput ? nombreInput.value.trim() : '';
+                const almacen = almacenInput ? almacenInput.value.trim() : '';
+                const whatsapp = whatsappInput ? whatsappInput.value.trim() : '';
+
+                if (!nombre || !almacen || !whatsapp) {
+                    alert('Completá nombre, almacén y WhatsApp para continuar.');
+                    return;
+                }
+
+                const productos = Array.from(
+                    document.querySelectorAll('#chips-productos .chip.selected')
+                ).map(function(chip) {
+                    return chip.getAttribute('data-value');
+                });
+
+                const mensaje =
+                    'Hola! Me quiero sumar al pool de compras\n\n' +
+                    'Nombre: ' + nombre + '\n' +
+                    'Almacén: ' + almacen + '\n' +
+                    'WhatsApp: ' + whatsapp + '\n' +
+                    'Productos: ' + (productos.length ? productos.join(', ') : 'No especificados');
+
+                const url = 'https://wa.me/5493416067866?text=' + encodeURIComponent(mensaje);
+                window.open(url, '_blank', 'noopener,noreferrer');
             }
 
             function cerrarGracias() {
