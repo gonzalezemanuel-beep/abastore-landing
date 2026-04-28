@@ -592,16 +592,20 @@
             font-weight: 700;
         }
         .btn-submit {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            box-sizing: border-box;
             background: var(--accent);
             color: #fff;
             font-weight: 700;
-            font-size: 1rem;
-            padding: 14px 24px;
+            font-size: 1.05rem;
+            padding: 16px 32px;
             border-radius: var(--radius-sm);
             border: none;
             cursor: pointer;
             width: 100%;
-            min-height: 50px;
+            min-height: 54px;
             font-family: var(--sans);
             letter-spacing: -0.01em;
             transition: opacity 0.15s;
@@ -1043,7 +1047,7 @@
                         <span class="chip" data-value="Otros">📦 Otros</span>
                     </div>
                 </div>
-                <a href="#" class="btn-submit" id="btn-sumarme" onclick="return armarWsp(this)">Quiero sumarme →</a>
+                <button type="button" class="btn-submit" id="btn-sumarme" onclick="armarWsp()">Quiero sumarme →</button>
                 <p class="disclaimer-form">Te contactamos en menos de 24hs · <a id="link-politica-form">Política de privacidad</a></p>
             </form>
             <div class="bloque-whatsapp-alt">
@@ -1177,11 +1181,11 @@
             const pantallaGracias = document.getElementById('pantalla-gracias');
             const btnCerrarGracias = document.getElementById('btn-cerrar-gracias');
 
-            function armarWsp(link) {
+            function armarWsp() {
                 const nombre = document.getElementById('nombre').value.trim();
                 const almacen = document.getElementById('almacen').value.trim();
                 const whatsapp = document.getElementById('whatsapp').value.trim();
-                if (!nombre || !almacen || !whatsapp) return false;
+                if (!nombre || !almacen || !whatsapp) return;
                 const productos = Array.from(document.querySelectorAll('#chips-productos .chip.selected'))
                     .map(c => c.getAttribute('data-value'));
                 const mensaje = 'Hola! Me quiero sumar al pool de compras\n\n'
@@ -1189,10 +1193,7 @@
                     + 'Almacen: ' + almacen + '\n'
                     + 'WhatsApp: ' + whatsapp + '\n'
                     + 'Productos: ' + (productos.length ? productos.join(', ') : 'No especificados');
-                link.href = 'https://wa.me/5493416067866?text=' + encodeURIComponent(mensaje);
-                link.target = '_blank';
-                link.rel = 'noopener';
-                return true;
+                window.open('https://wa.me/5493416067866?text=' + encodeURIComponent(mensaje), '_blank', 'noopener');
             }
 
             function cerrarGracias() {
